@@ -1,52 +1,51 @@
+
+# app.py
 import os
+import gdown
 import streamlit as st
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import json
 
-# ============================
-# Load Model & Classes
-# ============================
+# Google Drive File ID (replace with your actual one)
+FILE_ID = "1bCyAfsonw3ef3Ig_KbKCHntCbL9T7yHN"
+OUTPUT_PATH = "tomato_model.h5"   # must be full saved model, not just weights
 
-MODEL_PATH = "tomato_model"   # SavedModel format (folder)
-CLASS_FILE = "models/class_indices.json"
+url = f"https://drive.google.com/uc?id={FILE_ID}"
 
-# Load the model (SavedModel format works across TF versions)
+# Download model if not exists
+if not os.path.exists(OUTPUT_PATH):
+    gdown.download(url, OUTPUT_PATH, quiet=False)
+
+# ✅ Load the full model
 @st.cache_resource
 def load_trained_model():
-    return tf.keras.models.load_model(MODEL_PATH)
+    return tf.keras.models.load_model(OUTPUT_PATH)
 
 model = load_trained_model()
 
-# Load class indices (your mapping of class -> index)
-with open(CLASS_FILE) as f:
+# Load class indices (you should upload this JSON file too)
+with open("models/class_indices.json") as f:
     class_indices = json.load(f)
 
-# Reverse dict: {0: "class_name"}
 class_names = {v: k for k, v in class_indices.items()}
 
-# ============================
 # Streamlit UI
-# ============================
-
 st.title("🍅 Tomato Plant Disease Detection")
 st.write("Upload a tomato leaf image and the model will predict the disease.")
 
 uploaded_file = st.file_uploader("Choose a leaf image...", type=["jpg", "jpeg", "png"])
 
-if uploaded_file is not None:
-    # Load & preprocess
+if uploaded_file:
     img = image.load_img(uploaded_file, target_size=(224, 224))
-    img_array = image.img_to_array(img) / 255.0
+    img_array = image.img_to_array(img)/255.0
     img_array = np.expand_dims(img_array, axis=0)
 
-    # Prediction
     prediction = model.predict(img_array)
     result_idx = np.argmax(prediction)
     result = class_names[result_idx]
     confidence = np.max(prediction) * 100
 
-    # Show result
     st.image(uploaded_file, caption="Uploaded Leaf", use_column_width=True)
     st.success(f"Prediction: **{result}** ({confidence:.2f}%)")
