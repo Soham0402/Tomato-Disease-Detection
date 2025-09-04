@@ -1,32 +1,34 @@
-# app.py
 import os
-import gdown
 import streamlit as st
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.preprocessing import image
-from tensorflow.keras.models import load_model
 import json
 
+# ============================
 # Load Model & Classes
-# Google Drive file ID
-FILE_ID = "1bCyAfsonw3ef3Ig_KbKCHntCbL9T7yHN"
-OUTPUT_PATH = "tomato_model.h5"
+# ============================
 
-url = f"https://drive.google.com/uc?id={FILE_ID}"
+MODEL_PATH = "tomato_model"   # SavedModel format (folder)
+CLASS_FILE = "models/class_indices.json"
 
-# Download only if not already present
-if not os.path.exists(OUTPUT_PATH):
-    gdown.download(url, OUTPUT_PATH, quiet=False)
+# Load the model (SavedModel format works across TF versions)
+@st.cache_resource
+def load_trained_model():
+    return tf.keras.models.load_model(MODEL_PATH)
 
-# Load the model
-model = load_model(OUTPUT_PATH, compile=False, safe_mode=False)
+model = load_trained_model()
 
-with open("models/class_indices.json") as f:
+# Load class indices (your mapping of class -> index)
+with open(CLASS_FILE) as f:
     class_indices = json.load(f)
 
-# Reverse dict: {0:"class_name"}
+# Reverse dict: {0: "class_name"}
 class_names = {v: k for k, v in class_indices.items()}
+
+# ============================
+# Streamlit UI
+# ============================
 
 st.title("🍅 Tomato Plant Disease Detection")
 st.write("Upload a tomato leaf image and the model will predict the disease.")
@@ -36,7 +38,7 @@ uploaded_file = st.file_uploader("Choose a leaf image...", type=["jpg", "jpeg", 
 if uploaded_file is not None:
     # Load & preprocess
     img = image.load_img(uploaded_file, target_size=(224, 224))
-    img_array = image.img_to_array(img)/255.0
+    img_array = image.img_to_array(img) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
 
     # Prediction
