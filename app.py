@@ -7,8 +7,8 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import json
 
-# Google Drive File ID (full model, not weights only)
-FILE_ID = "1bCyAfsonw3ef3Ig_KbKCHntCbL9T7yHN"   # <-- upload your tomato_model.h5 to Drive & put its ID here
+# Google Drive File ID for full model (not just weights)
+FILE_ID = "1bCyAfsonw3ef3Ig_KbKCHntCbL9T7yHN"
 OUTPUT_PATH = "tomato_model.h5"
 
 url = f"https://drive.google.com/uc?id={FILE_ID}"
@@ -17,11 +17,18 @@ url = f"https://drive.google.com/uc?id={FILE_ID}"
 if not os.path.exists(OUTPUT_PATH):
     gdown.download(url, OUTPUT_PATH, quiet=False)
 
-# ✅ Load full trained model
+# Download class indices json (upload it to Google Drive too and use its FILE_ID)
+CLASS_FILE_ID = "PUT_YOUR_CLASS_INDICES_JSON_FILE_ID_HERE"
+CLASS_OUTPUT = "class_indices.json"
+
+if not os.path.exists(CLASS_OUTPUT):
+    gdown.download(f"https://drive.google.com/uc?id={CLASS_FILE_ID}", CLASS_OUTPUT, quiet=False)
+
+# ✅ Load model directly
 @st.cache_resource
 def load_trained_model():
     model = tf.keras.models.load_model(OUTPUT_PATH)
-    with open("models/class_indices.json") as f:
+    with open(CLASS_OUTPUT) as f:
         class_indices = json.load(f)
     return model, class_indices
 
