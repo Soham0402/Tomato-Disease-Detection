@@ -1,4 +1,3 @@
-
 # app.py
 import os
 import gdown
@@ -8,38 +7,22 @@ import tensorflow as tf
 from tensorflow.keras.preprocessing import image
 import json
 
-# Google Drive File ID (weights only)
-FILE_ID = "1bCyAfsonw3ef3Ig_KbKCHntCbL9T7yHN"
-OUTPUT_PATH = "tomato_weights.h5"
+# Google Drive File ID (full model, not weights only)
+FILE_ID = "1bCyAfsonw3ef3Ig_KbKCHntCbL9T7yHN"   # <-- upload your tomato_model.h5 to Drive & put its ID here
+OUTPUT_PATH = "tomato_model.h5"
 
 url = f"https://drive.google.com/uc?id={FILE_ID}"
 
-# Download model weights if not already present
+# Download model if not already present
 if not os.path.exists(OUTPUT_PATH):
     gdown.download(url, OUTPUT_PATH, quiet=False)
 
-# ✅ Rebuild the exact architecture you used during training
-def build_model(num_classes):
-    base_model = tf.keras.applications.MobileNetV2(
-        input_shape=(224, 224, 3),
-        include_top=False,
-        weights=None,   # we will load our own weights
-        pooling="avg"
-    )
-    x = tf.keras.layers.Dense(128, activation="relu")(base_model.output)
-    output = tf.keras.layers.Dense(num_classes, activation="softmax")(x)
-    model = tf.keras.Model(inputs=base_model.input, outputs=output)
-    return model
-
+# ✅ Load full trained model
 @st.cache_resource
 def load_trained_model():
-    # Load class indices first to know number of classes
+    model = tf.keras.models.load_model(OUTPUT_PATH)
     with open("models/class_indices.json") as f:
         class_indices = json.load(f)
-
-    num_classes = len(class_indices)
-    model = build_model(num_classes)
-    model.load_weights(OUTPUT_PATH)   # load weights into architecture
     return model, class_indices
 
 model, class_indices = load_trained_model()
