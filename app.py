@@ -7,7 +7,8 @@ from tensorflow.keras.models import load_model
 import json
 
 # Load Model & Classes
-model = load_model("models/tomato_model.h5")
+model = load_model("tomato_model.h5")
+model.save("models/tomato_model")
 with open("models/class_indices.json") as f:
     class_indices = json.load(f)
 
