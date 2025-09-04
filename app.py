@@ -1,4 +1,6 @@
 # app.py
+import os
+import gdown
 import streamlit as st
 import numpy as np
 import tensorflow as tf
@@ -7,7 +9,17 @@ from tensorflow.keras.models import load_model
 import json
 
 # Load Model & Classes
-model = load_model("models/tomato_model.h5")
+# Google Drive file ID
+FILE_ID = "1aBcDeFgHiJkLmNoPqrStUvWxYz"
+OUTPUT_PATH = "tomato_model.h5"
+
+# Download only if not already present
+if not os.path.exists(OUTPUT_PATH):
+    url = f"https://drive.google.com/uc?id={FILE_ID}"
+    gdown.download(url, OUTPUT_PATH, quiet=False)
+
+# Load the model
+model = load_model(OUTPUT_PATH)
 with open("models/class_indices.json") as f:
     class_indices = json.load(f)
 

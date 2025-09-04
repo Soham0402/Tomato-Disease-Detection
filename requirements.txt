@@ -1,9 +1,10 @@
-tensorflow==2.12.0
-keras==2.12.0
-h5py==3.8.0
+tensorflow
+keras
+h5py
 numpy
 pandas
 scikit-learn
 opencv-python
 streamlit
 matplotlib
+gdown
