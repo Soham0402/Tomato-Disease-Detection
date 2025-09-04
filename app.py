@@ -10,12 +10,13 @@ import json
 
 # Load Model & Classes
 # Google Drive file ID
-FILE_ID = "1aBcDeFgHiJkLmNoPqrStUvWxYz"
+FILE_ID = "1bCyAfsonw3ef3Ig_KbKCHntCbL9T7yHN"
 OUTPUT_PATH = "tomato_model.h5"
+
+url = f"https://drive.google.com/uc?id={FILE_ID}"
 
 # Download only if not already present
 if not os.path.exists(OUTPUT_PATH):
-    url = f"https://drive.google.com/uc?id={FILE_ID}"
     gdown.download(url, OUTPUT_PATH, quiet=False)
 
 # Load the model
