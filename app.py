@@ -20,7 +20,8 @@ if not os.path.exists(OUTPUT_PATH):
     gdown.download(url, OUTPUT_PATH, quiet=False)
 
 # Load the model
-model = load_model(OUTPUT_PATH)
+model = load_model(OUTPUT_PATH, compile=False, safe_mode=False)
+
 with open("models/class_indices.json") as f:
     class_indices = json.load(f)
 
