@@ -10,8 +10,8 @@ from PIL import Image
 # =========================
 # Google Drive File IDs
 # =========================
-MODEL_FILE_ID = "1tw3IHJfdxnCX-vPl7N3pED_uxzkgdNop"
-CLASS_FILE_ID = "1uZv2WOdDPMgWSQAdoXmHiwyhfYPa8o0I"
+MODEL_FILE_ID = "1EsANPxRes5kJ8jQZWSVfI_2ZhtqU3gJn"
+CLASS_FILE_ID = "1w1SS0MxAzqhjWzxcAQZat8CqFWobdnpU"
 
 MODEL_PATH = "tomato_cnn.h5"
 CLASS_FILE = "class_indices.txt"
