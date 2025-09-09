@@ -1,10 +1,8 @@
-
 import streamlit as st
 import tensorflow as tf
 import numpy as np
 import gdown
 import os
-import ast
 from PIL import Image
 
 # =========================
@@ -30,8 +28,12 @@ if not os.path.exists(CLASS_FILE):
 # =========================
 model = tf.keras.models.load_model(MODEL_PATH)
 
+# Load class indices (line by line parsing)
+class_indices = {}
 with open(CLASS_FILE, "r") as f:
-    class_indices = ast.literal_eval(f.read())
+    for line in f:
+        idx, cls = line.strip().split(":")
+        class_indices[cls] = int(idx)
 
 # Reverse mapping (index → class name)
 idx_to_class = {v: k for k, v in class_indices.items()}
@@ -108,12 +110,12 @@ if uploaded_file is not None:
     predicted_class = np.argmax(predictions[0])
     disease_name = idx_to_class[predicted_class]
 
-    # 🔹 Normalize disease_name (replace spaces with underscores)
+    # Normalize key for disease_info dict
     disease_key = disease_name.replace(" ", "_")
 
     st.subheader(f"🦠 Predicted Disease: **{disease_name}**")
 
-    # Print description + cure
+    # Show details
     if disease_key in disease_info:
         st.markdown(f"**Description:** {disease_info[disease_key]['description']}")
         st.markdown(f"**Recommended Cure:** {disease_info[disease_key]['cure']}")
