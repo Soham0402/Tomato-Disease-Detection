@@ -20,10 +20,10 @@ CLASS_FILE = "class_indices.txt"
 # Download model + class map if not present
 # =========================
 if not os.path.exists(MODEL_PATH):
-    gdown.download(f"https://drive.google.com/uc?id={MODEL_ID}", MODEL_PATH, quiet=False)
+    gdown.download(f"https://drive.google.com/uc?id={MODEL_FILE_ID}", MODEL_PATH, quiet=False)
 
 if not os.path.exists(CLASS_FILE):
-    gdown.download(f"https://drive.google.com/uc?id={CLASS_ID}", CLASS_FILE, quiet=False)
+    gdown.download(f"https://drive.google.com/uc?id={CLASS_FILE_ID}", CLASS_FILE, quiet=False)
 
 # =========================
 # Load model and class indices
