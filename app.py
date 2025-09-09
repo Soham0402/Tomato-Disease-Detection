@@ -8,8 +8,8 @@ from PIL import Image
 # =========================
 # Google Drive File IDs
 # =========================
-MODEL_FILE_ID = "1EsANPxRes5kJ8jQZWSVfI_2ZhtqU3gJn"
-CLASS_FILE_ID = "1w1SS0MxAzqhjWzxcAQZat8CqFWobdnpU"
+MODEL_FILE_ID = "1NsfMH5lVF9lJgJcVeJVj8FzCp8AGE34A" #https://drive.google.com/file/d/1NsfMH5lVF9lJgJcVeJVj8FzCp8AGE34A/view?usp=sharing
+CLASS_FILE_ID = "1ZgIR_podIKbKytZPigtvy0d1QHmSHjfQ" #https://drive.google.com/file/d/1ZgIR_podIKbKytZPigtvy0d1QHmSHjfQ/view?usp=sharing
 
 MODEL_PATH = "tomato_cnn.h5"
 CLASS_FILE = "class_indices.txt"
