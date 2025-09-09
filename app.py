@@ -82,7 +82,7 @@ disease_info = {
         "description": "Spider mites suck sap, leading to yellow stippling and webbing.",
         "cure": "Spray miticides or neem oil. Wash plants with water to remove mites."
     },
-    "Powdery_Mildew": {
+    "powdery_mildew": {
         "description": "White, powdery growth on leaves and stems.",
         "cure": "Apply sulfur-based fungicides, neem oil, or potassium bicarbonate sprays."
     }
